@@ -76,6 +76,16 @@ window.addEventListener('resize', () =>
 })
 
 /**
+ * Mouse
+ */
+const mouse = new THREE.Vector2()
+
+window.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX / sizes.width * 2 - 1
+    mouse.y = -(e.clientY / sizes.height) * 2 + 1
+})
+
+/**
  * Camera
  */
 // Base camera
@@ -108,14 +118,10 @@ const tick = () =>
     // Animate Objects
     object1.position.y = Math.sin(elapsedTime * 0.3) * 1.5
     object2.position.y = Math.sin(elapsedTime * 0.8) * 1.5
-    object3.position.y = Math.sin(elapsedTime * 0.5)  * 1.5
+    object3.position.y = Math.sin(elapsedTime * 0.5) * 1.5
 
     // Cast a ray
-    const rayOrigin = new THREE.Vector3(-3, 0, 0)
-    const rayDirection = new THREE.Vector3(1, 0, 0)
-    rayDirection.normalize()
-
-    raycaster.set(rayOrigin, rayDirection)
+    raycaster.setFromCamera(mouse, camera)
 
     const objectsToTest = [object1, object2, object3]
     const intersects = raycaster.intersectObjects(objectsToTest)
