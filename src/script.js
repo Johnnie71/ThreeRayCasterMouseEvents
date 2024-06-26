@@ -85,6 +85,22 @@ window.addEventListener('mousemove', (e) => {
     mouse.y = -(e.clientY / sizes.height) * 2 + 1
 })
 
+window.addEventListener('click', (e) => {
+    if(currentIntersect){
+        switch(currentIntersect.object){
+            case object1:
+                console.log("object 1")
+                break
+            case object2:
+                console.log('object 2')
+                break
+            case object3:
+                console.log('object 3')
+                break
+        }
+    }
+})
+
 /**
  * Camera
  */
@@ -111,6 +127,8 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
  */
 const clock = new THREE.Clock()
 
+let currentIntersect = null
+
 const tick = () =>
 {
     const elapsedTime = clock.getElapsedTime()
@@ -132,6 +150,18 @@ const tick = () =>
     
     for(const intersect of intersects){
         intersect.object.material.color.set('#0000ff')
+    }
+
+    if(intersects.length){
+        if(!currentIntersect) {
+            console.log('mouse enter')
+        }
+        currentIntersect = intersects[0]
+    } else {
+        if(currentIntersect){
+            console.log('mouse leave')
+        }
+        currentIntersect = null
     }
 
     // Update controls
